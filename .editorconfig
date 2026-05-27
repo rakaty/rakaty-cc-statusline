@@ -1,0 +1,29 @@
+# EditorConfig: garantiza que cualquier editor (VSCode, Sublime, Notepad++,
+# JetBrains, etc.) guarde los archivos con el formato correcto.
+# https://editorconfig.org
+root = true
+
+[*]
+charset = utf-8
+end_of_line = lf
+indent_style = space
+indent_size = 2
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+# Shell scripts: SIEMPRE LF (bash falla con CRLF en Linux/Mac)
+[*.sh]
+end_of_line = lf
+
+# PowerShell: CRLF + UTF-8 con BOM (PowerShell 5.1 corrompe UTF-8 sin BOM)
+[*.{ps1,psm1,psd1}]
+end_of_line = crlf
+charset = utf-8-bom
+
+# Batch: CRLF
+[*.{cmd,bat}]
+end_of_line = crlf
+
+# Makefile: tabuladores obligatorios
+[Makefile]
+indent_style = tab

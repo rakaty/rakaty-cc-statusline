@@ -1,0 +1,58 @@
+# rakaty-cc-statusline — reglas de normalización para Git.
+#
+# Estas reglas garantizan que cada archivo se entregue con el formato correcto
+# al hacer clone/pull en CUALQUIER SO, sin depender de core.autocrlf del usuario.
+
+# ------------------------------------------------------------------
+# Comportamiento por defecto
+# ------------------------------------------------------------------
+# Detección automática de texto vs binario. Los archivos detectados como
+# texto se normalizan a LF en el repositorio.
+*           text=auto eol=lf
+
+# ------------------------------------------------------------------
+# Shell scripts (Linux / macOS / Git Bash) — SIEMPRE LF
+# ------------------------------------------------------------------
+# Con CRLF, bash en Linux/Mac falla con "bad interpreter: /usr/bin/env\r"
+# o errores de sintaxis. El statusline.sh embebido tampoco debe llevar CRLF.
+*.sh        text eol=lf
+*.bash      text eol=lf
+
+# ------------------------------------------------------------------
+# Windows PowerShell — CRLF, BOM se preserva tal cual
+# ------------------------------------------------------------------
+# PowerShell 5.1 lee los .ps1 sin BOM como cp1252 y corrompe acentos y
+# caracteres Unicode (Instalación → InstalaciÃ³n, █ → â–ˆ).
+# El BOM forma parte del contenido del archivo y Git lo preserva
+# automáticamente. NO se usa working-tree-encoding (Git lo rechaza con
+# "failed to encode from UTF-8-BOM to UTF-8" en algunas combinaciones
+# y la conversión no es necesaria: el BOM ya está en bytes literales).
+*.ps1       text eol=crlf
+*.psm1      text eol=crlf
+*.psd1      text eol=crlf
+
+# ------------------------------------------------------------------
+# Windows Batch — CRLF
+# ------------------------------------------------------------------
+# cmd.exe espera CRLF; con LF a veces no procesa labels y `goto` mal.
+*.cmd       text eol=crlf
+*.bat       text eol=crlf
+
+# ------------------------------------------------------------------
+# Documentación y datos — LF
+# ------------------------------------------------------------------
+*.md        text eol=lf
+*.txt       text eol=lf
+*.json      text eol=lf
+*.yml       text eol=lf
+*.yaml      text eol=lf
+
+# ------------------------------------------------------------------
+# Binarios habituales (por si en el futuro se añaden capturas, etc.)
+# ------------------------------------------------------------------
+*.png       binary
+*.jpg       binary
+*.jpeg      binary
+*.gif       binary
+*.ico       binary
+*.zip       binary
