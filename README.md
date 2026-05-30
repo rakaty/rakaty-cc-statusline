@@ -140,7 +140,7 @@ Si prefieres ejecutar las acciones directamente sin pasar por el menú:
 - **En Windows el `.ps1` se abre en un editor (Notepad++, VSCode, etc.) en lugar de ejecutarse**: usa **`rakaty-cc-statusline.cmd`** con doble-click. Es el patrón estándar de la industria (igual que `gradlew`/`gradlew.bat`, `mvnw`/`mvnw.cmd`).
 - **Aparece vacío o con errores**: ejecuta manualmente para depurar:
   ```bash
-  echo '{"model":{"id":"claude-sonnet-4-6","display_name":"Sonnet 4.6"},"context_window":{"used_percentage":25,"context_window_size":200000,"current_usage":{"input_tokens":50000}},"workspace":{"current_dir":"'"$PWD"'"}}' | bash ~/.claude/scripts/statusline.sh
+  echo '{"model":{"id":"claude-sonnet-4-6","display_name":"Sonnet 4.6"},"context_window":{"used_percentage":25,"context_window_size":200000,"current_usage":{"input_tokens":50000}},"workspace":{"project_dir":"'"$PWD"'"}}' | bash ~/.claude/scripts/statusline.sh
   ```
 - **Quiero restaurar mi `settings.json` original**: en `~/.claude/` encontrarás los backups `settings.json.bak.YYYYMMDD-HHMMSS`. Cópialo encima de `settings.json` para revertir.
 - **Edité el `statusline.sh` instalado y quiero conservar mis cambios**: ten en cuenta que la próxima vez que ejecutes Instalar, sobreescribirá `~/.claude/scripts/statusline.sh` con la versión embebida en el launcher.
