@@ -10,7 +10,7 @@ StatusLine personalizado para **Claude Code** en una sola pieza: **un launcher p
 
 Reemplaza la línea de estado por defecto de Claude Code por una vista de dos filas con:
 
-- **Fila 1**: Barra de progreso del contexto con colores (verde <50%, amarillo 50–75%, rojo ≥75%), porcentaje usado y tokens consumidos/totales.
+- **Fila 1**: Barra de progreso del contexto con 5 colores según el uso (verde claro <29%, verde oscuro 29–35% «degradación aceptable», amarillo 35–40%, naranja 40–65%, rojo ≥65% «conviene compactar»), porcentaje usado y tokens consumidos/totales.
 - **Fila 2**: `[ <ruta de trabajo> ] <nombre del modelo>`.
 
 Ejemplo:

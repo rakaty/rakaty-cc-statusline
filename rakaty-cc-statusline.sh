@@ -77,12 +77,16 @@ bar=""
 i=0; while [ "$i" -lt "$filled" ]; do bar="${bar}${ch_full}";  i=$((i+1)); done
 i=0; while [ "$i" -lt "$empty"  ]; do bar="${bar}${ch_empty}"; i=$((i+1)); done
 
-if [ "$pct_int" -lt 50 ]; then
-  color=$'\033[32m'
-elif [ "$pct_int" -lt 75 ]; then
-  color=$'\033[33m'
+if [ "$pct_int" -lt 29 ]; then
+  color=$'\033[32m'              # Verde 1  (0-28%)   ANSI 32  ~#13A10E  zona segura
+elif [ "$pct_int" -lt 35 ]; then
+  color=$'\033[38;2;0;100;0m'    # Verde 2  (29-34%)  #006400  degradacion aceptable pero ya empieza
+elif [ "$pct_int" -lt 40 ]; then
+  color=$'\033[33m'              # Amarillo (35-39%)  ANSI 33  ~#C19C00  precaucion
+elif [ "$pct_int" -lt 65 ]; then
+  color=$'\033[38;2;255;140;0m'  # Naranja  (40-64%)  #FF8C00  degradacion notable
 else
-  color=$'\033[31m'
+  color=$'\033[31m'             # Rojo     (65-100%) ANSI 31  ~#C50F1F  peligro, conviene compactar
 fi
 reset=$'\033[0m'
 
