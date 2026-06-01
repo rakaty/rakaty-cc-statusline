@@ -102,8 +102,35 @@ fmt_num() {
 used_fmt=$(fmt_num "$used")
 total_fmt=$(fmt_num "$total")
 
-printf "[rakaty.com][Context] %s%s%s %d%% (%s/%s)\n[ %s ] %s" \
-  "$color" "$bar" "$reset" "$pct_int" "$used_fmt" "$total_fmt" "$cwd" "$model_name"
+# ---- Effort: nivel (fiable, del payload) + flag ultracode (best-effort) ----
+effort_level=$(echo "$input" | jq -r '.effort.level // empty')
+[ -z "$effort_level" ] && effort_level=$(jq -r '.effortLevel // empty' "$HOME/.claude/settings.json" 2>/dev/null)
+
+case "$effort_level" in
+  low)    effort_disp="Low" ;;
+  medium) effort_disp="Medium" ;;
+  high)   effort_disp="High" ;;
+  xhigh)  effort_disp="xHigh" ;;
+  max)    effort_disp="Max" ;;
+  *)      effort_disp="$effort_level" ;;
+esac
+effort_suffix=""
+[ -n "$effort_disp" ] && effort_suffix=" ($effort_disp)"
+
+# El payload colapsa ultracode -> xhigh; el transcript SI lo distingue (best-effort)
+ultra_suffix=""
+if [ "$effort_level" = "xhigh" ]; then
+  transcript=$(echo "$input" | jq -r '.transcript_path // empty')
+  if [ -n "$transcript" ] && [ -f "$transcript" ]; then
+    last_raw=$(grep -F '<local-command-stdout>Set effort level to' "$transcript" 2>/dev/null \
+               | jq -r 'select(.type=="user" and (.message.content|type=="string") and (.message.content|startswith("<local-command-stdout>Set effort level to"))) | .message.content' 2>/dev/null \
+               | grep -oE 'Set effort level to [a-z]+' | tail -1 | awk '{print $NF}')
+    [ "$last_raw" = "ultracode" ] && ultra_suffix=$' \033[1;36multracode\033[0m'
+  fi
+fi
+
+printf "[rakaty.com][Context] %s%s%s %d%% (%s/%s)\n[ %s ] %s%s%s" \
+  "$color" "$bar" "$reset" "$pct_int" "$used_fmt" "$total_fmt" "$cwd" "$model_name" "$effort_suffix" "$ultra_suffix"
 STATUSLINE_EOF
 
 # ---------------------------------------------------------------------------
